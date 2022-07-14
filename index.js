@@ -8,7 +8,7 @@ const app = express();
 const port = process.env.PORT || 80;
 
 const StudentCheckModel = require("./db/models/StudentCheckModel");
-const { db } = require("./db/config");
+const db = require("./db/config");
 
 const corsOptions = {
   origin: ["http://localhost:3000", "https://identidade-estudantil.vercel.app"],
@@ -104,6 +104,7 @@ app.get("/getstudentsid", function (req, res) {
 app.post("/registry", async (req, res) => {
   await db.sync(); //Sincronizar tabelas do banco de dados
   const data = req.body;
+  console.log("data API: ", data)
   data.password = await bcrypt.hash(data.password, 8);
   const studentCheck = await StudentCheckModel.findOne({
     where: {
