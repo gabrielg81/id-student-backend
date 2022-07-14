@@ -39,7 +39,6 @@ app.post("/check", async (req, res) => {
     headless: true, //false abre interface gráfica true não abre.
     defaultViewport: null, //Tira o tamanho padrão 800x600
     args: ["--start-maximized", "--no-sandbox"],//permite que seja uma página http e página maximizada
-    session: sessionCfg,
     ignoreHTTPSErrors: true,
   });
 
