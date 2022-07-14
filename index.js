@@ -38,7 +38,7 @@ app.post("/check", async (req, res) => {
   const browser = await puppeteer.launch({
     headless: true, //false abre interface gráfica true não abre.
     defaultViewport: null, //Tira o tamanho padrão 800x600
-    args: ["--disable-setuid-sandbox", "--start-maximized"], //permite que seja uma página http e página maximizada
+    args: ["--start-maximized", "--no-sandbox"],//permite que seja uma página http e página maximizada
     ignoreHTTPSErrors: true,
   });
 
@@ -54,33 +54,17 @@ app.post("/check", async (req, res) => {
       "#ctl00_PageContent_LoginPanel_Password",
       `${result.password}`
     );
-
     await Promise.all([page.click('[type="submit"]'), page.waitForNavigation()]);
 
-    //await page.click('[type="submit"]');
-    console.log("chega dps submit");
     //await page.waitForNavigation(); //Espera o carregamento da página
-
-    console.log("chega dps de esperar carregar");
     // Aqui dentro executará toda DOM do javascript
     let checkName = await page.evaluate(() => {
-      console.log("dentro do evaluate");
-      let verify = false;
-      while (verify == false) {
-        const name = document.querySelector(".usuario-nome")?.innerHTML;
-        console.log("bateu", name);
-        if (name) {
-          verify = true;
-          return {
-            name,
-          }
-        }
-
-      }
-    })
-    console.log("chega 03");
+      const name = document.querySelector(".usuario-nome")?.innerHTML;
+      return {
+        name,
+      };
+    });
     if (!checkName) {
-      console.log("chega 04");
       await page.click('[name="ctl00$btnLogin"]'); //ctl00$btnLogin Se houver algum comunicado na página
       await page.waitForNavigation();
       checkName = await page.evaluate(() => {
@@ -90,7 +74,6 @@ app.post("/check", async (req, res) => {
         };
       });
     }
-    console.log("chega 05");
     await browser.close();
     if (checkName.name != undefined) {
       res.status(200).send({
@@ -102,14 +85,12 @@ app.post("/check", async (req, res) => {
       });
     }
   } catch (err) {
-    console.log("dentro do catch");
     await browser.close();
     console.log("Erro ao executar => : ", err);
     return res.status(400).json({
       success: false,
     });
   } finally {
-    console.log("dentro do finally");
     await browser.close();
   }
 });
