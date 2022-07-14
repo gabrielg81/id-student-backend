@@ -5,7 +5,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 
 const app = express();
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 80;
 
 const StudentCheckModel = require("./db/models/StudentCheckModel");
 const { db } = require("./db/config");
@@ -36,7 +36,7 @@ app.post("/check", async (req, res) => {
   const result = req.body;
 
   const browser = await puppeteer.launch({
-    headless: false, //false abre interface gráfica true não abre.
+    headless: true, //false abre interface gráfica true não abre.
     defaultViewport: null, //Tira o tamanho padrão 800x600
     args: ["--disable-setuid-sandbox", "--start-maximized"], //permite que seja uma página http e página maximizada
     ignoreHTTPSErrors: true,
