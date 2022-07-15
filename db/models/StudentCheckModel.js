@@ -63,11 +63,11 @@ const StudentCheckModel = db.define("StudentIDs", {
   },
   dateRegister: {
     allowNull: true,
-    type: Sequelize.DATE,
+    type: Sequelize.STRING,
   },
   dateRevalidate: {
     allowNull: true,
-    type: Sequelize.DATE,
+    type: Sequelize.STRING,
   },
 });
 
