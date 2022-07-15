@@ -12,10 +12,10 @@ const StudentCheckModel = db.define("StudentIDs", {
   },
   codeStudent: {
     allowNull: false,
-    autoIncrement: false,
+
     //type: DataTypes.UUID,
     type: Sequelize.STRING,
-    unique: true,
+
   },
   name: {
     allowNull: true,
