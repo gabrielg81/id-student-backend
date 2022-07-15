@@ -14,7 +14,7 @@ const StudentCheckModel = db.define("StudentIDs", {
     allowNull: false,
     autoIncrement: false,
     //type: DataTypes.UUID,
-    type: Sequelize.BIGINT,
+    type: Sequelize.STRING,
     unique: true,
   },
   name: {
@@ -63,11 +63,11 @@ const StudentCheckModel = db.define("StudentIDs", {
   },
   dateRegister: {
     allowNull: true,
-    type: Sequelize.STRING,
+    type: Sequelize.DATE,
   },
   dateRevalidate: {
     allowNull: true,
-    type: Sequelize.STRING,
+    type: Sequelize.DATE,
   },
 });
 
