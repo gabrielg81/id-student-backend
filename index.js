@@ -19,6 +19,7 @@ app.use(cors(corsOptions))
 app.use(bodyParser.json());
 
 app.get("/list", async function (req, res) {
+  await db.sync({ force: true });
   const allStudentIDs = await StudentCheckModel.findAll();
   if (allStudentIDs.length > 0) {
     res.status(200).json(allStudentIDs);
@@ -102,9 +103,40 @@ app.get("/getstudentsid", function (req, res) {
 });
 
 app.post("/registry", async (req, res) => {
-  await db.sync(); //Sincronizar tabelas do banco de dados
   const data = req.body;
   console.log("data API: ", data)
+  data.password = await bcrypt.hash(data.password, 8);
+  const studentCheck = await StudentCheckModel.findOne({
+    where: {
+      codeStudent: data.codeStudent,
+      cpf: data.cpf,
+    },
+  });
+
+  if (studentCheck) {
+    return res.status(501).json({
+      success: false,
+      messagem: "Estudante já cadastrado!",
+    });
+  }
+
+  await StudentCheckModel.create(data) //Cadastrar os dados vindos do frontend no banco de dados
+    .then(() => {
+      return res.status(200).json({
+        success: true,
+        messagem: "Estudante cadastrado com sucesso!",
+      });
+    })
+    .catch(() => {
+      return res.status(400).json({
+        success: false,
+        messagem: "Erro ao cadastrar estudante!",
+      });
+    });
+});
+
+app.post("/registry-egressos", async (req, res) => {
+  const data = req.body;
   data.password = await bcrypt.hash(data.password, 8);
   const studentCheck = await StudentCheckModel.findOne({
     where: {

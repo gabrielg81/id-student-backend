@@ -69,8 +69,51 @@ const StudentCheckModel = db.define("StudentIDs", {
     allowNull: true,
     type: Sequelize.STRING,
   },
+  //egressos
+  pronoun: { //pronome
+    allowNull: true,
+    type: Sequelize.STRING,
+  },
+  contact: { //contato
+    allowNull: true,
+    type: Sequelize.STRING,
+  },
+  email: { //email
+    allowNull: true,
+    type: Sequelize.STRING,
+  },
+  city: { //cidade
+    allowNull: true,
+    type: Sequelize.STRING,
+  },
+  state: { //estado
+    allowNull: true,
+    type: Sequelize.STRING,
+  },
+  country: { //país
+    allowNull: true,
+    type: Sequelize.STRING,
+  },
+  status: {
+    allowNull: true,
+    type: Sequelize.STRING,
+  },
+  yaer_finish: { //Ano conclusao
+    allowNull: true,
+    type: Sequelize.STRING,
+  },
+  facebook: {
+    allowNull: true,
+    type: Sequelize.STRING,
+  },
+  instagram: {
+    allowNull: true,
+    type: Sequelize.STRING,
+  }
 });
-
-/* db.sync(() => console.log("Banco de dados conectado"));
- */
+/*
+db.sync(() => console.log("Banco de dados atualizado!"));
+*/
 module.exports = StudentCheckModel;
+
+
