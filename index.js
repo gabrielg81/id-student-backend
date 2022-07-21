@@ -19,7 +19,6 @@ app.use(cors(corsOptions))
 app.use(bodyParser.json());
 
 app.get("/list", async function (req, res) {
-  await db.sync({ force: true });
   const allStudentIDs = await StudentCheckModel.findAll();
   if (allStudentIDs.length > 0) {
     res.status(200).json(allStudentIDs);

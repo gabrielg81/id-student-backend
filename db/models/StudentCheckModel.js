@@ -98,7 +98,7 @@ const StudentCheckModel = db.define("StudentIDs", {
     allowNull: true,
     type: Sequelize.STRING,
   },
-  yaer_finish: { //Ano conclusao
+  year_finish: { //Ano conclusao
     allowNull: true,
     type: Sequelize.STRING,
   },
