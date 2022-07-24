@@ -3,11 +3,15 @@ import prismaClient from "../../database/prismaClient";
 
 export class ListSchoolHistoryController {
   async handle(request: Request, response: Response) {
-    const idStudent = request.params;
+    const { id_student } = request.body;
 
-    const list = await prismaClient.schoolHistory.findMany({
+    const list = await prismaClient.registerSchoolHistory.findMany({
       where: {
-        id: idStudent,
+        id_student,
+      },
+      select: {
+        students: true,
+        schoolhistory: true,
       },
     });
     return response.json(list);

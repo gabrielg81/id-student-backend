@@ -3,10 +3,12 @@ import prismaClient from "../../database/prismaClient";
 
 export class ListStudentController {
   async handle(request: Request, response: Response) {
-    const list = await prismaClient.studentModels.findMany({
-      include: {
-        CourseStudentModels: true,
-        SemesterStudentModels: true,
+    const list = await prismaClient.registerStudent.findMany({
+      select: {
+        address: true,
+        course: true,
+        semester: true,
+        students: true,
       },
     });
     return response.json(list);

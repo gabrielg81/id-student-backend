@@ -10,12 +10,14 @@ import { ListSemesterController } from "../controllers/semester/listAllSemester"
 import { CheckController } from "../controllers/student/check";
 import { ListStudentController } from "../controllers/student/listAll";
 import { LoginController } from "../controllers/student/login";
+import { ProfileStudentController } from "../controllers/student/openProfile";
 import { RegisterStudentController } from "../controllers/student/registerStudent";
 
 const router = Router();
 
 const login = new LoginController();
 const check = new CheckController();
+const profile = new ProfileStudentController();
 
 const registerStudent = new RegisterStudentController();
 const createCourse = new CreateCourse();
@@ -32,6 +34,7 @@ const listprocareer = new ListProCareerController();
 //#region endpoint access system
 router.post("/login", login.handle);
 router.post("/check", check.handle);
+router.post("/profile", profile.handle);
 //#endregion
 
 //#region endpoints id student

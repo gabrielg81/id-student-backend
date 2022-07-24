@@ -5,12 +5,14 @@ export class RegisterSchoolHistoryController {
   async handle(request: Request, response: Response) {
     const { id_student, history } = request.body;
 
-    const registerSchoolHistory =
+    const registerSchoolHistory = await history.forEach(async (i: any) => {
       await prismaClient.registerSchoolHistory.create({
         data: {
           schoolhistory: {
             create: {
-              history,
+              dateClosing: i.dateClosing,
+              dateInitiated: i.dateInitiated,
+              history: i.history,
             },
           },
           students: {
@@ -20,6 +22,8 @@ export class RegisterSchoolHistoryController {
           },
         },
       });
+    });
+
     return response.json(registerSchoolHistory);
   }
 }

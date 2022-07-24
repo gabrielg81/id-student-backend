@@ -1,19 +1,20 @@
 import { Request, Response } from "express";
 import prismaClient from "../../database/prismaClient";
 
-export class ListProCareerController {
+export class ProfileStudentController {
   async handle(request: Request, response: Response) {
     const { id_student } = request.body;
-
-    const list = await prismaClient.registerProCareer.findMany({
+    const profile = await prismaClient.registerStudent.findFirst({
       where: {
-        id_student,
+        id: id_student,
       },
       select: {
-        procareer: true,
+        address: true,
+        course: true,
+        semester: true,
         students: true,
       },
     });
-    return response.json(list);
+    return response.json(profile);
   }
 }

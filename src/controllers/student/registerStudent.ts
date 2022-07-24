@@ -3,8 +3,31 @@ import prismaClient from "../../database/prismaClient";
 
 export class RegisterStudentController {
   async handle(request: Request, response: Response) {
-    const { codeStudent, name, id_course, id_semester, city, cpf, password } =
-      request.body;
+    const {
+      codeStudent,
+      name,
+      id_course,
+      id_semester,
+      city,
+      cpf,
+      password,
+      rg,
+      sex,
+      birthDate,
+      linkedin,
+      photo,
+      lattes,
+      pronoun,
+      contact,
+      facebook,
+      instagram,
+      email,
+      yearFinish,
+      dateRevalidate,
+      dateRegister,
+      country,
+      state,
+    } = request.body;
 
     const verify = await prismaClient.studentModels.findFirst({
       where: {
@@ -18,15 +41,29 @@ export class RegisterStudentController {
             create: {
               codeStudent,
               name,
-              cpf,
               password,
-              //... mais dados
+              cpf,
+              rg,
+              sex,
+              birthDate,
+              linkedin,
+              photo,
+              lattes,
+              pronoun,
+              contact,
+              facebook,
+              instagram,
+              email,
+              yearFinish,
+              dateRevalidate,
+              dateRegister,
             },
           },
           address: {
             create: {
               city,
-              //... mais dados
+              country,
+              state,
             },
           },
           course: {

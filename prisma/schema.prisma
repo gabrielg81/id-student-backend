@@ -8,10 +8,10 @@ datasource db {
 }
 
 model AddressStudentModels {
-  id              Int               @id @unique @default(autoincrement())
-  city            String?           @db.VarChar(255)
-  state           String?           @db.VarChar(255)
-  country         String?           @db.VarChar(255)
+  id      Int     @id @unique @default(autoincrement())
+  city    String? @db.VarChar(255)
+  state   String? @db.VarChar(255)
+  country String? @db.VarChar(255)
 
   RegisterStudent RegisterStudent[]
 
@@ -19,13 +19,11 @@ model AddressStudentModels {
 }
 
 model CourseStudentModels {
-  id              Int               @id @unique @default(autoincrement())
-  course          String?           @db.VarChar(255)
+  id     Int     @id @unique @default(autoincrement())
+  course String? @db.VarChar(255)
 
   RegisterStudent RegisterStudent[]
 
-  id_student Int?
-  student    StudentModels? @relation(fields: [id_student], references: [id])
 
   @@map("course")
 }
@@ -36,15 +34,15 @@ model SemesterStudentModels {
 
   RegisterStudent RegisterStudent[]
 
-  id_student Int?
-  student    StudentModels? @relation(fields: [id_student], references: [id])
 
   @@map("semester")
 }
 
 model ProfessionalCareer {
-  id                Int                 @id @unique @default(autoincrement())
-  procareer         String?             @db.VarChar(255)
+  id            Int     @id @unique @default(autoincrement())
+  procareer     String? @db.VarChar(255)
+  dateInitiated String? @db.VarChar(255)
+  dateClosing   String? @db.VarChar(255)
 
   RegisterProCareer RegisterProCareer[]
 
@@ -52,8 +50,10 @@ model ProfessionalCareer {
 }
 
 model SchoolHistory {
-  id                    Int                     @id @unique @default(autoincrement())
-  history               String?                 @db.VarChar(255)
+  id            Int     @id @unique @default(autoincrement())
+  history       String? @db.VarChar(255)
+  dateInitiated String? @db.VarChar(255)
+  dateClosing   String? @db.VarChar(255)
 
   RegisterSchoolHistory RegisterSchoolHistory[]
 
@@ -70,7 +70,7 @@ model StudentModels {
   sex            String? @db.VarChar(255)
   birthDate      String? @db.VarChar(255)
   linkedin       String? @db.VarChar(255)
-  photo          String? @db.VarChar(255)
+  photo          String? @db.LongText()
   lattes         String? @db.VarChar(255)
   pronoun        String? @db.VarChar(255)
   contact        String? @db.VarChar(255)
@@ -84,8 +84,6 @@ model StudentModels {
   createdAt DateTime? @db.DateTime(0)
   updatedAt DateTime? @db.DateTime(0)
 
-  CourseStudentModels   CourseStudentModels[]
-  SemesterStudentModels SemesterStudentModels[]
   RegisterStudent       RegisterStudent[]
   RegisterProCareer     RegisterProCareer[]
   RegisterSchoolHistory RegisterSchoolHistory[]
