@@ -6,5 +6,5 @@ const app = express();
 app.use(express.json());
 
 app.use(router);
-
-app.listen(8080, () => console.log("Server ON! 8080"));
+const port = 80;
+app.listen(port, () => console.log(`Server ON! Port: ${port}`));
