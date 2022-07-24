@@ -5,10 +5,6 @@ import cors from "cors";
 
 const app = express();
 
-app.use(express.json());
-
-app.use(router);
-
 app.use(
   cors({
     origin: "*",
@@ -17,6 +13,10 @@ app.use(
     optionsSuccessStatus: 204,
   })
 );
+
+app.use(express.json());
+
+app.use(router);
 
 /*app.listen(() => console.log("Server ON!"));*/
 
