@@ -1,0 +1,136 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model AddressStudentModels {
+  id              Int               @id @unique @default(autoincrement())
+  city            String?           @db.VarChar(255)
+  state           String?           @db.VarChar(255)
+  country         String?           @db.VarChar(255)
+
+  RegisterStudent RegisterStudent[]
+
+  @@map("address")
+}
+
+model CourseStudentModels {
+  id              Int               @id @unique @default(autoincrement())
+  course          String?           @db.VarChar(255)
+
+  RegisterStudent RegisterStudent[]
+
+  id_student Int?
+  student    StudentModels? @relation(fields: [id_student], references: [id])
+
+  @@map("course")
+}
+
+model SemesterStudentModels {
+  id       Int     @id @unique @default(autoincrement())
+  semester String? @db.VarChar(255)
+
+  RegisterStudent RegisterStudent[]
+
+  id_student Int?
+  student    StudentModels? @relation(fields: [id_student], references: [id])
+
+  @@map("semester")
+}
+
+model ProfessionalCareer {
+  id                Int                 @id @unique @default(autoincrement())
+  procareer         String?             @db.VarChar(255)
+
+  RegisterProCareer RegisterProCareer[]
+
+  @@map("procareer")
+}
+
+model SchoolHistory {
+  id                    Int                     @id @unique @default(autoincrement())
+  history               String?                 @db.VarChar(255)
+
+  RegisterSchoolHistory RegisterSchoolHistory[]
+
+  @@map("schoolhistory")
+}
+
+model StudentModels {
+  id             Int     @id @unique @default(autoincrement())
+  codeStudent    String  @db.VarChar(255)
+  name           String? @db.VarChar(255)
+  password       String? @db.VarChar(255)
+  cpf            String? @db.VarChar(255)
+  rg             String? @db.VarChar(255)
+  sex            String? @db.VarChar(255)
+  birthDate      String? @db.VarChar(255)
+  linkedin       String? @db.VarChar(255)
+  photo          String? @db.VarChar(255)
+  lattes         String? @db.VarChar(255)
+  pronoun        String? @db.VarChar(255)
+  contact        String? @db.VarChar(255)
+  facebook       String? @db.VarChar(255)
+  instagram      String? @db.VarChar(255)
+  email          String? @db.VarChar(255)
+  yearFinish     String? @db.VarChar(255)
+  dateRegister   String? @db.VarChar(255)
+  dateRevalidate String? @db.VarChar(255)
+
+  createdAt DateTime? @db.DateTime(0)
+  updatedAt DateTime? @db.DateTime(0)
+
+  CourseStudentModels   CourseStudentModels[]
+  SemesterStudentModels SemesterStudentModels[]
+  RegisterStudent       RegisterStudent[]
+  RegisterProCareer     RegisterProCareer[]
+  RegisterSchoolHistory RegisterSchoolHistory[]
+
+  @@map("student")
+}
+
+model RegisterStudent {
+  id Int @id @unique @default(autoincrement())
+
+  id_student Int
+  students   StudentModels @relation(fields: [id_student], references: [id])
+
+  id_semester Int
+  semester    SemesterStudentModels @relation(fields: [id_semester], references: [id])
+
+  id_course Int
+  course    CourseStudentModels @relation(fields: [id_course], references: [id])
+
+  id_address Int
+  address    AddressStudentModels @relation(fields: [id_address], references: [id])
+
+  @@map("student_registration")
+}
+
+model RegisterProCareer {
+  id Int @id @unique @default(autoincrement())
+
+  id_procareer Int
+  procareer    ProfessionalCareer @relation(fields: [id_procareer], references: [id])
+
+  id_student Int
+  students   StudentModels @relation(fields: [id_student], references: [id])
+
+  @@map("procareer_registration")
+}
+
+model RegisterSchoolHistory {
+  id Int @id @unique @default(autoincrement())
+
+  id_history_registration Int
+  schoolhistory           SchoolHistory @relation(fields: [id_history_registration], references: [id])
+
+  id_student Int
+  students   StudentModels @relation(fields: [id_student], references: [id])
+
+  @@map("school_history_registration")
+}
