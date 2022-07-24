@@ -9,12 +9,14 @@ app.use(express.json());
 
 app.use(router);
 
-const corsOptions = {
-  origin: "*",
-  preflightContinue: false,
-  credentials: true,
-};
-app.use(cors(corsOptions));
+app.use(
+  cors({
+    origin: "*",
+    methods: "*",
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
+  })
+);
 
 /*app.listen(() => console.log("Server ON!"));*/
 
