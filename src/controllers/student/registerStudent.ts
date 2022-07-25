@@ -78,7 +78,12 @@ export class RegisterStudentController {
           },
         },
       });
-      return response.json(register);
+      return response
+        .setHeader(
+          "Access-Control-Allow-Headers",
+          "X-Requested-With, content-type"
+        )
+        .json(register);
     } else {
       return response.json({
         message: `CPF ${cpf} já tem cadastro no sistema.`,

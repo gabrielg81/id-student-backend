@@ -62,7 +62,7 @@ model SchoolHistory {
 
 model StudentModels {
   id             Int     @id @unique @default(autoincrement())
-  codeStudent    String  @db.VarChar(255)
+  codeStudent    String?  @db.VarChar(255)
   name           String? @db.VarChar(255)
   password       String? @db.VarChar(255)
   cpf            String? @db.VarChar(255)
@@ -98,13 +98,13 @@ model RegisterStudent {
   students   StudentModels @relation(fields: [id_student], references: [id])
 
   id_semester Int
-  semester    SemesterStudentModels @relation(fields: [id_semester], references: [id])
+  semester    SemesterStudentModels? @relation(fields: [id_semester], references: [id])
 
   id_course Int
-  course    CourseStudentModels @relation(fields: [id_course], references: [id])
+  course    CourseStudentModels? @relation(fields: [id_course], references: [id])
 
   id_address Int
-  address    AddressStudentModels @relation(fields: [id_address], references: [id])
+  address    AddressStudentModels? @relation(fields: [id_address], references: [id])
 
   @@map("student_registration")
 }
