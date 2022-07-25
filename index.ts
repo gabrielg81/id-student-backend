@@ -11,6 +11,7 @@ app.use(
     methods: "*",
     preflightContinue: false,
     optionsSuccessStatus: 204,
+    credentials: true,
   })
 );
 
