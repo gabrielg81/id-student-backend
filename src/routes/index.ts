@@ -10,6 +10,7 @@ import { ListSemesterController } from "../controllers/semester/listAllSemester"
 import { ListStudentController } from "../controllers/student/listAll";
 import { LoginController } from "../controllers/student/login";
 import { ProfileStudentController } from "../controllers/student/openProfile";
+import { EgressoController } from "../controllers/student/registerEgresso";
 import { RegisterStudentController } from "../controllers/student/registerStudent";
 
 const router = Router();
@@ -28,6 +29,7 @@ const listallcourse = new ListCourseController();
 const listallsemester = new ListSemesterController();
 const listschoolhistory = new ListSchoolHistoryController();
 const listprocareer = new ListProCareerController();
+const registerEgresso = new EgressoController();
 
 //#region endpoint access system
 router.post("/login", login.handle);
@@ -47,6 +49,7 @@ router.get("/semester-all", listallsemester.handle);
 //#region endpoints egressos
 router.post("/procareer", createProCareer.handle);
 router.post("/schoolhistory", createSchoolHistory.handle);
+router.post("/register-egresso", registerEgresso.handle);
 
 router.get("/procareer-all", listprocareer.handle);
 router.get("/schoolhistory-all", listschoolhistory.handle);
