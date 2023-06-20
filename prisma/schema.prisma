@@ -8,128 +8,148 @@ datasource db {
 }
 
 model AddressStudentModels {
-  id      Int     @id @unique @default(autoincrement())
-  city    String? @db.VarChar(255)
-  state   String? @db.VarChar(255)
-  country String? @db.VarChar(255)
-
+  id              Int               @id @unique @default(autoincrement())
+  city            String?           @db.VarChar(255)
+  state           String?           @db.VarChar(255)
+  country         String?           @db.VarChar(255)
   RegisterStudent RegisterStudent[]
 
   @@map("address")
 }
 
 model CourseStudentModels {
-  id     Int     @id @unique @default(autoincrement())
-  course String? @db.VarChar(255)
-
+  id              Int               @id @unique @default(autoincrement())
+  value          String?           @db.VarChar(255)
   RegisterStudent RegisterStudent[]
-
 
   @@map("course")
 }
 
 model SemesterStudentModels {
-  id       Int     @id @unique @default(autoincrement())
-  semester String? @db.VarChar(255)
-
+  id              Int               @id @unique @default(autoincrement())
+  value        String?           @db.VarChar(255)
   RegisterStudent RegisterStudent[]
-
 
   @@map("semester")
 }
 
 model ProfessionalCareer {
-  id            Int     @id @unique @default(autoincrement())
-  procareer     String? @db.VarChar(255)
-  dateInitiated String? @db.VarChar(255)
-  dateClosing   String? @db.VarChar(255)
-
+  id                Int                 @id @unique @default(autoincrement())
+  procareer         String?             @db.VarChar(255)
+  dateInitiated     String?             @db.VarChar(255)
+  dateClosing       String?             @db.VarChar(255)
   RegisterProCareer RegisterProCareer[]
 
   @@map("procareer")
 }
 
 model SchoolHistory {
-  id            Int     @id @unique @default(autoincrement())
-  history       String? @db.VarChar(255)
-  dateInitiated String? @db.VarChar(255)
-  dateClosing   String? @db.VarChar(255)
-
+  id                    Int                     @id @unique @default(autoincrement())
+  history               String?                 @db.VarChar(255)
+  dateInitiated         String?                 @db.VarChar(255)
+  dateClosing           String?                 @db.VarChar(255)
   RegisterSchoolHistory RegisterSchoolHistory[]
 
   @@map("schoolhistory")
 }
 
 model StudentModels {
-  id             Int     @id @unique @default(autoincrement())
-  codeStudent    String?  @db.VarChar(255)
-  name           String? @db.VarChar(255)
-  password       String? @db.VarChar(255)
-  cpf            String? @db.VarChar(255)
-  rg             String? @db.VarChar(255)
-  sex            String? @db.VarChar(255)
-  birthDate      String? @db.VarChar(255)
-  linkedin       String? @db.VarChar(255)
-  photo          String? @db.LongText()
-  lattes         String? @db.VarChar(255)
-  pronoun        String? @db.VarChar(255)
-  contact        String? @db.VarChar(255)
-  facebook       String? @db.VarChar(255)
-  instagram      String? @db.VarChar(255)
-  email          String? @db.VarChar(255)
-  yearFinish     String? @db.VarChar(255)
-  dateRegister   String? @db.VarChar(255)
-  dateRevalidate String? @db.VarChar(255)
-
-  createdAt DateTime? @db.DateTime(0)
-  updatedAt DateTime? @db.DateTime(0)
-
-  RegisterStudent       RegisterStudent[]
+  id                    Int                     @id @unique @default(autoincrement())
+  codeStudent           String?                 @db.VarChar(255)
+  name                  String?                 @db.VarChar(255)
+  password              String?                 @db.VarChar(255)
+  cpf                   String?                 @db.VarChar(255)
+  rg                    String?                 @db.VarChar(255)
+  sex                   String?                 @db.VarChar(255)
+  birthDate             String?                 @db.VarChar(255)
+  linkedin              String?                 @db.VarChar(255)
+  photo                 String?                 @db.LongText
+  lattes                String?                 @db.VarChar(255)
+  pronoun               String?                 @db.VarChar(255)
+  contact               String?                 @db.VarChar(255)
+  facebook              String?                 @db.VarChar(255)
+  instagram             String?                 @db.VarChar(255)
+  email                 String?                 @db.VarChar(255)
+  yearFinish            String?                 @db.VarChar(255)
+  dateRegister          String?                 @db.VarChar(255)
+  dateRevalidate        String?                 @db.VarChar(255)
+  createdAt             DateTime?               @db.DateTime(0)
+  updatedAt             DateTime?               @db.DateTime(0)
   RegisterProCareer     RegisterProCareer[]
   RegisterSchoolHistory RegisterSchoolHistory[]
+  RegisterStudent       RegisterStudent[]
 
   @@map("student")
 }
 
 model RegisterStudent {
-  id Int @id @unique @default(autoincrement())
-
-  id_student Int
-  students   StudentModels @relation(fields: [id_student], references: [id])
-
+  id          Int                    @id @unique @default(autoincrement())
+  id_student  Int
   id_semester Int?
+  id_course   Int?
+  id_address  Int?
+  address     AddressStudentModels?  @relation(fields: [id_address], references: [id])
+  course      CourseStudentModels?   @relation(fields: [id_course], references: [id])
   semester    SemesterStudentModels? @relation(fields: [id_semester], references: [id])
+  students    StudentModels          @relation(fields: [id_student], references: [id])
 
-  id_course Int?
-  course    CourseStudentModels? @relation(fields: [id_course], references: [id])
-
-  id_address Int?
-  address    AddressStudentModels? @relation(fields: [id_address], references: [id])
-
+  @@index([id_address], map: "student_registration_id_address_fkey")
+  @@index([id_course], map: "student_registration_id_course_fkey")
+  @@index([id_semester], map: "student_registration_id_semester_fkey")
+  @@index([id_student], map: "student_registration_id_student_fkey")
   @@map("student_registration")
 }
 
-
 model RegisterProCareer {
-  id Int @id @unique @default(autoincrement())
-
+  id           Int                @id @unique @default(autoincrement())
   id_procareer Int
+  id_student   Int
   procareer    ProfessionalCareer @relation(fields: [id_procareer], references: [id])
+  students     StudentModels      @relation(fields: [id_student], references: [id])
 
-  id_student Int
-  students   StudentModels @relation(fields: [id_student], references: [id])
-
+  @@index([id_procareer], map: "procareer_registration_id_procareer_fkey")
+  @@index([id_student], map: "procareer_registration_id_student_fkey")
   @@map("procareer_registration")
 }
 
 model RegisterSchoolHistory {
-  id Int @id @unique @default(autoincrement())
-
+  id                      Int           @id @unique @default(autoincrement())
   id_history_registration Int
+  id_student              Int
   schoolhistory           SchoolHistory @relation(fields: [id_history_registration], references: [id])
+  students                StudentModels @relation(fields: [id_student], references: [id])
 
-  id_student Int
-  students   StudentModels @relation(fields: [id_student], references: [id])
-
+  @@index([id_history_registration], map: "school_history_registration_id_history_registration_fkey")
+  @@index([id_student], map: "school_history_registration_id_student_fkey")
   @@map("school_history_registration")
+}
+
+model StudentIDs {
+  idStudent      Int      @id @unique(map: "idStudent") @default(autoincrement())
+  codeStudent    String   @db.VarChar(255)
+  name           String?  @db.VarChar(255)
+  password       String?  @db.VarChar(255)
+  course         String?  @db.VarChar(255)
+  semester       String?  @db.VarChar(255)
+  cpf            String?  @db.VarChar(255)
+  rg             String?  @db.VarChar(255)
+  sex            String?  @db.VarChar(255)
+  birthDate      String?  @db.VarChar(255)
+  linkedin       String?  @db.VarChar(255)
+  photo          String?  @db.VarChar(255)
+  lattes         String?  @db.VarChar(255)
+  dateRegister   String?  @db.VarChar(255)
+  dateRevalidate String?  @db.VarChar(255)
+  pronoun        String?  @db.VarChar(255)
+  contact        String?  @db.VarChar(255)
+  email          String?  @db.VarChar(255)
+  city           String?  @db.VarChar(255)
+  state          String?  @db.VarChar(255)
+  country        String?  @db.VarChar(255)
+  status         String?  @db.VarChar(255)
+  year_finish    String?  @db.VarChar(255)
+  facebook       String?  @db.VarChar(255)
+  instagram      String?  @db.VarChar(255)
+  createdAt      DateTime @db.DateTime(0)
+  updatedAt      DateTime @db.DateTime(0)
 }

@@ -6,7 +6,7 @@ export class ProfileStudentController {
     const { id_student } = request.body;
     const profile = await prismaClient.registerStudent.findFirst({
       where: {
-        id: id_student,
+        id_student,
       },
       select: {
         address: true,
