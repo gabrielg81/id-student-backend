@@ -12,6 +12,8 @@ import { LoginController } from "../controllers/student/login";
 import { ProfileStudentController } from "../controllers/student/openProfile";
 import { EgressoController } from "../controllers/student/registerEgresso";
 import { RegisterStudentController } from "../controllers/student/registerStudent";
+import { RevalidateStudentController } from "../controllers/student/revalidate";
+import { VerifyStudentController } from "../controllers/student/verify";
 
 const router = Router();
 
@@ -23,6 +25,8 @@ const createCourse = new CreateCourse();
 const createProCareer = new RegisterProCareerController();
 const createSchoolHistory = new RegisterSchoolHistoryController();
 const createSemester = new CreateSemester();
+const verifyStudent = new VerifyStudentController();
+const revalidateStudent = new RevalidateStudentController();
 
 const listStudent = new ListStudentController();
 const listallcourse = new ListCourseController();
@@ -44,6 +48,10 @@ router.post("/semester", createSemester.handle);
 router.get("/students-all", listStudent.handle);
 router.get("/course-all", listallcourse.handle);
 router.get("/semester-all", listallsemester.handle);
+
+router.get("/verify-student", verifyStudent.checkInfoStudents);
+
+router.get("/revalidate-student", revalidateStudent.handle);
 //#endregion
 
 //#region endpoints egressos
