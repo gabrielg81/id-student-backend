@@ -121,7 +121,13 @@ export class VerifyStudentController {
       "http://www.portalacademico.uneb.br/PortalSagres/Acesso.aspx";
     const result = req.body;
 
-    const nightmare = new Nightmare({ show: false }); // Executar em modo headless (sem interface gráfica)
+    //const nightmare = new Nightmare({ show: false }); // Executar em modo headless (sem interface gráfica)
+
+    const nightmare = new Nightmare({
+      electronPath: "/path/to/chrome/driver",
+      show: false,
+      timeout: 30000,
+    }); // Executar em modo headless (sem interface gr
 
     try {
       await nightmare
