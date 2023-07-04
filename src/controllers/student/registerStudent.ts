@@ -68,12 +68,12 @@ export class RegisterStudentController {
           },
           course: {
             connect: {
-              id: id_course,
+              id: 1,
             },
           },
           semester: {
             connect: {
-              id: id_semester,
+              id: 8,
             },
           },
         },
