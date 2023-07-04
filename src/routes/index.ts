@@ -49,9 +49,9 @@ router.get("/students-all", listStudent.handle);
 router.get("/course-all", listallcourse.handle);
 router.get("/semester-all", listallsemester.handle);
 
-router.get("/verify-student", verifyStudent.checkInfoStudents);
+router.post("/verify-student", verifyStudent.checkInfoStudents);
 
-router.get("/revalidate-student", revalidateStudent.handle);
+router.post("/revalidate-student", revalidateStudent.handle);
 //#endregion
 
 //#region endpoints egressos
