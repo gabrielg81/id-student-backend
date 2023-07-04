@@ -5,15 +5,17 @@ import cors from "cors";
 
 const app = express();
 
-app.use(
-  cors({
-    origin: "*",
-    methods: "*",
-    preflightContinue: false,
-    optionsSuccessStatus: 204,
-    credentials: true,
-  })
-);
+// app.use(
+//   cors({
+//     origin: "*",
+//     methods: "*",
+//     preflightContinue: false,
+//     optionsSuccessStatus: 204,
+//     credentials: true,
+//   })
+// );
+
+app.use(cors());
 
 app.use(express.json());
 
