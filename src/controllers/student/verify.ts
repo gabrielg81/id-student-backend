@@ -1,13 +1,61 @@
 import { Request, Response } from "express";
-import puppeteer from "puppeteer";
+import { chromium } from "playwright";
 
-import { Builder, By, Key } from "selenium-webdriver";
-
-import chrome from "selenium-webdriver/chrome";
-import Nightmare from "nightmare";
+import path from "path";
 
 export class VerifyStudentController {
+  async checkInfoStudents(req: Request, res: Response) {
+    const pagePrimary =
+      "http://www.portalacademico.uneb.br/PortalSagres/Acesso.aspx";
+    const result = req.body;
+
+    const browser = await chromium.launch();
+    try {
+      const context = await browser.newContext();
+      const page = await context.newPage();
+
+      await page.goto(pagePrimary);
+      await page.fill(
+        '[name="ctl00$PageContent$LoginPanel$UserName"]',
+        result.matriculation
+      );
+      await page.fill(
+        "#ctl00_PageContent_LoginPanel_Password",
+        result.password
+      );
+      await page.click('[type="submit"]');
+      await page.waitForSelector(".usuario-nome");
+
+      const name = await page.$eval(
+        ".usuario-nome",
+        (element) => element.textContent
+      );
+
+      if (name) {
+        res.status(200).send({
+          name: name,
+        });
+      } else {
+        return res.status(500).json({
+          success: false,
+        });
+      }
+    } catch (err) {
+      console.log("Erro ao executar:", err);
+      return res.status(400).json({
+        success: false,
+      });
+    } finally {
+      await browser.close();
+    }
+  }
+
   // async checkInfoStudents(req: Request, res: Response) {
+  //   const chromeDriverPath = path.resolve(
+  //     __dirname,
+  //     "../../../chromedriver/chromedriver"
+  //   );
+
   //   const pagePrimary =
   //     "http://www.portalacademico.uneb.br/PortalSagres/Acesso.aspx";
 
@@ -15,14 +63,11 @@ export class VerifyStudentController {
 
   //   const browser = await puppeteer.launch({
   //     headless: true, //false abre interface gráfica true não abre.
-  //     //headless: chrome.headless,
   //     defaultViewport: null, //Tira o tamanho padrão 800x600
-  //     //args: ["--disable-setuid-sandbox", "--start-maximized"], //permite que seja uma página http e página maximizada
-  //     args: chrome.args,
+  //     args: ["--disable-setuid-sandbox", "--start-maximized"], //permite que seja uma página http e página maximizada
   //     ignoreHTTPSErrors: true,
-  //     executablePath: await chrome.executablePath,
+  //     executablePath: chromeDriverPath,
   //   });
-
   //   try {
   //     const page = await browser.newPage();
   //     await page.setUserAgent(
@@ -116,51 +161,56 @@ export class VerifyStudentController {
   //   }
   // }
 
-  async checkInfoStudents(req: Request, res: Response) {
-    const pagePrimary =
-      "http://www.portalacademico.uneb.br/PortalSagres/Acesso.aspx";
-    const result = req.body;
+  // async checkInfoStudents(req: Request, res: Response) {
+  //   const pagePrimary =
+  //     "http://www.portalacademico.uneb.br/PortalSagres/Acesso.aspx";
+  //   const result = req.body;
 
-    //const nightmare = new Nightmare({ show: false }); // Executar em modo headless (sem interface gráfica)
+  //   const chromeDriverPath = path.resolve(
+  //     __dirname,
+  //     "../../../chromedriver/chromedriver"
+  //   );
 
-    const nightmare = new Nightmare({
-      electronPath: "/path/to/chrome/driver",
-      show: false,
-      timeout: 30000,
-    }); // Executar em modo headless (sem interface gr
+  //   //const nightmare = new Nightmare({ show: false }); // Executar em modo headless (sem interface gráfica)
 
-    try {
-      await nightmare
-        .goto(pagePrimary)
-        .type(
-          '[name="ctl00$PageContent$LoginPanel$UserName"]',
-          result.matriculation
-        )
-        .type("#ctl00_PageContent_LoginPanel_Password", result.password)
-        .click('[type="submit"]')
-        .wait(".usuario-nome");
+  //   const nightmare = new Nightmare({
+  //     electronPath: chromeDriverPath,
+  //     show: false,
+  //     timeout: 30000,
+  //   }); // Executar em modo headless (sem interface gr
 
-      const name = await nightmare.evaluate(() => {
-        const nameElement = document.querySelector(".usuario-nome");
-        return nameElement ? nameElement.innerHTML.trim() : null;
-      });
+  //   try {
+  //     await nightmare
+  //       .goto(pagePrimary)
+  //       .type(
+  //         '[name="ctl00$PageContent$LoginPanel$UserName"]',
+  //         result.matriculation
+  //       )
+  //       .type("#ctl00_PageContent_LoginPanel_Password", result.password)
+  //       .click('[type="submit"]')
+  //       .wait(".usuario-nome");
 
-      if (name) {
-        res.status(200).send({
-          name: name,
-        });
-      } else {
-        return res.status(500).json({
-          success: false,
-        });
-      }
-    } catch (err) {
-      console.log("Erro ao executar:", err);
-      return res.status(400).json({
-        success: false,
-      });
-    } finally {
-      await nightmare.end();
-    }
-  }
+  //     const name = await nightmare.evaluate(() => {
+  //       const nameElement = document.querySelector(".usuario-nome");
+  //       return nameElement ? nameElement.innerHTML.trim() : null;
+  //     });
+
+  //     if (name) {
+  //       res.status(200).send({
+  //         name: name,
+  //       });
+  //     } else {
+  //       return res.status(500).json({
+  //         success: false,
+  //       });
+  //     }
+  //   } catch (err) {
+  //     console.log("Erro ao executar:", err);
+  //     return res.status(400).json({
+  //       success: false,
+  //     });
+  //   } finally {
+  //     await nightmare.end();
+  //   }
+  // }
 }
